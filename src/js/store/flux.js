@@ -55,18 +55,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			editContact: async (body, id) => {
 				try {
-					const response = await fetch(`https://playground.4geeks.com/contact/agendas/Jonathan/contacts/${id}`, {
+					const response = await fetch(`https://playground.4geeks.com/contact/agendas/jonathan1/contacts/${id}`, {
 						method: "PUT",
 						body: JSON.stringify(body),
 						headers: {
 							"Content-Type": "application/json"
 						}
-					})
+					}) 
+					console.log(response); 
 					if (!response.ok) {
-						throw new Error("Salio mal el Edit!!!!");
+						return { ok: false }; 
+					} 
+					if(response.status !==204){ 
+						const data = await response.json();
+					 console.log(data);
+					}else{  
+						console.log("El contacto se edit correctamente (sin contenido de respuesta).")
+
 					}
-					const data = await response.json();
-					console.log(data);
+					
 					const actions = getActions();
 					await actions.getContacts();
 
@@ -83,14 +90,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			deleteContact: async (idContact) => {
 				try {
-					const response = await fetch(`https://playground.4geeks.com/contact/agendas/Jonathan/contacts/${idContact}`, {
+					const response = await fetch(`https://playground.4geeks.com/contact/agendas/jonathan1/contacts/${idContact}`, {
 						method: "DELETE",
 					})
 					if (!response.ok) {
 						throw new Error("No se puede eliminar");
-					}
-					const data = await response.json();
+					} 
+					if(response.status !==204){ 
+						const data = await response.json();
 					console.log("El contacto se Elimino", data);
+					}else{ 
+						console.log("El contacto se elimino correctamente (sin contenido de respuesta).")
+					}
+					
 					const actions = getActions();
 					await actions.getContacts();
 

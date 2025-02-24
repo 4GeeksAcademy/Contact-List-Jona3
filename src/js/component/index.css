@@ -21,8 +21,14 @@ margin-left: 200px;
     margin-right: 350px;
   
 
+} 
+.Borde{ 
+border:5px solid rgb(99, 98, 98);   
 }
-    .Borde{ 
-border:5px solid rgb(99, 98, 98); 
-
-}
+.images{ 
+    margin-left: 200px; 
+  
+} 
+.edit, .trash {
+    padding: 5px;
+  } 
