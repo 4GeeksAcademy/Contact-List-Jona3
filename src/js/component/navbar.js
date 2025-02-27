@@ -6,7 +6,7 @@ export const Navbar = () => {
 	const navigate = useNavigate(); 
 	
 	const addcontact=()=>{ 
-		navigate('/AddNewContact');
+		navigate('/add');
 	}
 	return (
 		<nav className="navbar navbar-light bg-light mb-3">

@@ -2,25 +2,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			contacts: [],
-			formData: [],
-			currentEdit: [],
-			contact: []
+			
+			
 		},
 		actions: {
 			getContacts: async () => {
+				const actions=getActions();
 				try {
 					const response = await fetch("https://playground.4geeks.com/contact/agendas/jonathan1")
-					
+					if(response.status==404){ 
+						actions.createAgenda()
+					}
 					if (!response.ok) {
 						throw new Error("Salio mal el contacto");
-					} 
-					    const data = await response.json();
-						const store = getStore();
-						setStore({ ...store, contacts: data.contacts })
-					    console.log(data)
+					}
+					const data = await response.json();
+					const store = getStore();
+					setStore({ ...store, contacts: data.contacts })
+					console.log(data)
 
 				} catch (error) {
 					console.log("Algo Salio Mal!!", (error))
+				}
+			},
+			createAgenda: async () => {
+				try {
+					const response = await fetch("https://playground.4geeks.com/contact/agendas/jonathan1", {
+						method: "POST",
+					})
+					const responseData = await response.json();
+					console.log("Respuesta al servidor", responseData)
+					// console.log("Respuesta", response)
+
+				} catch (error) {
+					console.log("Aqui esta el Error!!!", error)
 				}
 			},
 			addContact: async (data) => {
@@ -42,7 +57,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// console.log("Respuesta", response)
 					if (response.ok) {
 						console.log("contacto agregado")
-						actions.getContacts();
+						actions.getContacts(); 
+						return true
 					}
 					else {
 						console.error("❌ Error en la respuesta del servidor:", responseData);
@@ -54,28 +70,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			editContact: async (body, id) => {
-				try {
+				try { 
+					const actions = getActions();
 					const response = await fetch(`https://playground.4geeks.com/contact/agendas/jonathan1/contacts/${id}`, {
 						method: "PUT",
 						body: JSON.stringify(body),
 						headers: {
 							"Content-Type": "application/json"
 						}
-					}) 
-					console.log(response); 
-					if (!response.ok) {
-						return { ok: false }; 
-					} 
-					if(response.status !==204){ 
-						const data = await response.json();
-					 console.log(data);
-					}else{  
-						console.log("El contacto se edit correctamente (sin contenido de respuesta).")
+					})
+					console.log(response);
+					if (response.ok) {
+						console.log("El contacto se edit correctamente (sin contenido de respuesta).") 
+						actions.getContacts();
 
+						return true
 					}
 					
-					const actions = getActions();
-					await actions.getContacts();
+
+					
 
 
 
@@ -83,10 +96,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error(error)
 				}
 			},
-			setCurrentEdit: (obj) => {
-				let store = getStore();
-				setStore({ ...store, currentEdit: obj })
-			},
+			
 
 			deleteContact: async (idContact) => {
 				try {
@@ -95,14 +105,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					if (!response.ok) {
 						throw new Error("No se puede eliminar");
-					} 
-					if(response.status !==204){ 
+					}
+					if (response.status !== 204) {
 						const data = await response.json();
-					console.log("El contacto se Elimino", data);
-					}else{ 
+						console.log("El contacto se Elimino", data);
+					} else {
 						console.log("El contacto se elimino correctamente (sin contenido de respuesta).")
 					}
-					
+
 					const actions = getActions();
 					await actions.getContacts();
 

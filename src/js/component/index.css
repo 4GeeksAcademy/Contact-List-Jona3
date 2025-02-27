@@ -17,18 +17,19 @@ height: 60px;
 margin-left: 200px;
 }
 .lista{ 
-    margin-left: 600px;   
+    margin-left: 500px;   
     margin-right: 350px;
-  
+  width: 700px;
 
 } 
 .Borde{ 
-border:5px solid rgb(99, 98, 98);   
+border:5px solid rgb(99, 98, 98);  
+  
 }
 .images{ 
-    margin-left: 200px; 
+   padding-left: 50px;
   
 } 
-.edit, .trash {
-    padding: 5px;
-  } 
+.trash{  
+    padding-left: 20px;
+} 
