@@ -32,7 +32,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					const responseData = await response.json();
 					console.log("Respuesta al servidor", responseData)
-					// console.log("Respuesta", response)
 
 				} catch (error) {
 					console.log("Aqui esta el Error!!!", error)
